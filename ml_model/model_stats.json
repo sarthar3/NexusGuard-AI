@@ -1,0 +1,60 @@
+{
+    "accuracy": 1.0,
+    "best_params": {
+        "class_weight": "balanced",
+        "max_depth": 10,
+        "min_samples_split": 2,
+        "n_estimators": 50
+    },
+    "metrics_by_class": {
+        "Normal": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1_score": 1.0,
+            "support": 2631
+        },
+        "DDoS": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1_score": 1.0,
+            "support": 793
+        },
+        "Port Scan": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1_score": 1.0,
+            "support": 576
+        }
+    },
+    "confusion_matrix": [
+        [
+            2631,
+            0,
+            0
+        ],
+        [
+            0,
+            793,
+            0
+        ],
+        [
+            0,
+            0,
+            576
+        ]
+    ],
+    "feature_importances": {
+        "protocol_type": 0.0002525174987156432,
+        "packet_size": 0.2563952442285165,
+        "flow_duration": 0.16974335870442958,
+        "packet_rate": 0.3086271068098389,
+        "byte_rate": 0.2649817727584994
+    },
+    "features_order": [
+        "protocol_type",
+        "packet_size",
+        "flow_duration",
+        "packet_rate",
+        "byte_rate"
+    ]
+}

@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexusGuard AI | SDN Threat Analytics</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Premium Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom Style Sheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- Chart.js for beautiful charts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Liquid Glass Organic Animated Background Blobs -->
+    <div class="liquid-bg-container">
+        <div class="liquid-blob blob-pink"></div>
+        <div class="liquid-blob blob-cyan"></div>
+        <div class="liquid-blob blob-purple"></div>
+    </div>
+
+    <div class="app-container">
+        <!-- Premium Floating Header -->
+        <header class="dashboard-header glass-card">
+            <div class="logo-area">
+                <div class="logo-icon-glow">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <h1>Nexus<span>Guard</span> AI</h1>
+            </div>
+            
+            <div class="system-status glass-badge active-normal" id="status-indicator">
+                <span class="status-dot"></span>
+                <span id="system-status-text">SECURED</span>
+            </div>
+            
+            <div class="header-right">
+                <div class="audio-control-btn" id="audio-toggle-btn" title="Toggle High-Tech Audio Alerts">
+                    <i class="fa-solid fa-volume-high"></i>
+                </div>
+                <div class="time-display" id="time-display">00:00:00</div>
+            </div>
+        </header>
+
+        <!-- Main Navigation Tabs -->
+        <nav class="navigation-tabs glass-card">
+            <button class="tab-btn active" data-tab="realtime-traffic">
+                <i class="fa-solid fa-gauge-high"></i> Traffic Monitor
+            </button>
+            <button class="tab-btn" data-tab="sdn-control">
+                <i class="fa-solid fa-gamepad"></i> SDN Control Panel
+            </button>
+            <button class="tab-btn" data-tab="ai-analytics">
+                <i class="fa-solid fa-brain"></i> AI Intelligence
+            </button>
+        </nav>
+
+        <main class="main-content">
+            <!-- TAB 1: Real-time Traffic Telemetry -->
+            <div class="tab-pane active" id="realtime-traffic">
+                <!-- KPIs Grid -->
+                <section class="kpis-grid">
+                    <div class="kpi-card glass-card hover-glow">
+                        <div class="kpi-icon-wrapper icon-blue">
+                            <i class="fa-solid fa-network-wired"></i>
+                        </div>
+                        <div class="kpi-info">
+                            <h3>Current Bandwidth</h3>
+                            <p class="kpi-value"><span id="val-bandwidth">0.00</span> <span class="unit">Mbps</span></p>
+                        </div>
+                        <div class="glow-bg"></div>
+                    </div>
+                    
+                    <div class="kpi-card glass-card hover-glow">
+                        <div class="kpi-icon-wrapper icon-purple">
+                            <i class="fa-solid fa-diagram-project"></i>
+                        </div>
+                        <div class="kpi-info">
+                            <h3>Active Flows</h3>
+                            <p class="kpi-value" id="val-flows">0</p>
+                        </div>
+                        <div class="glow-bg"></div>
+                    </div>
+                    
+                    <div class="kpi-card glass-card hover-glow alert-kpi-card">
+                        <div class="kpi-icon-wrapper icon-red">
+                            <i class="fa-solid fa-ban"></i>
+                        </div>
+                        <div class="kpi-info">
+                            <h3>Blocked IPs</h3>
+                            <p class="kpi-value" id="val-blocked">0</p>
+                        </div>
+                        <div class="glow-bg"></div>
+                    </div>
+                </section>
+
+                <div class="dashboard-split-layout">
+                    <!-- Traffic Chart Panel -->
+                    <section class="panel chart-panel glass-card">
+                        <div class="panel-header">
+                            <h2><i class="fa-solid fa-chart-line icon-cyan"></i> Real-Time Telemetry Analysis</h2>
+                            <span class="pulse-indicator"><span class="pulse-dot"></span> LIVE</span>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="trafficChart"></canvas>
+                        </div>
+                    </section>
+
+                    <!-- Alert Logger Panel -->
+                    <section class="panel alerts-panel glass-card">
+                        <div class="panel-header">
+                            <h2><i class="fa-solid fa-bell icon-pink"></i> Threat Intelligence Alerts</h2>
+                        </div>
+                        <div class="alerts-container">
+                            <ul id="alerts-list">
+                                <li class="alert-item empty-state">Telemetry stream initializing...</li>
+                            </ul>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- Network Flows Table -->
+                <section class="panel flows-panel glass-card">
+                    <div class="panel-header">
+                        <h2><i class="fa-solid fa-list-check icon-green"></i> Deep Packet Inspection (DPI) Flow Stream</h2>
+                    </div>
+                    <div class="table-wrapper">
+                        <table id="flows-table">
+                            <thead>
+                                <tr>
+                                    <th>Timestamp</th>
+                                    <th>Source IP Address</th>
+                                    <th>Destination IP Address</th>
+                                    <th>Protocol</th>
+                                    <th>Classification Result</th>
+                                </tr>
+                            </thead>
+                            <tbody id="flows-body">
+                                <tr><td colspan="5" class="empty-state">Waiting for switch datapath telemetry...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+
+            <!-- TAB 2: SDN Interactive Control Panel -->
+            <div class="tab-pane" id="sdn-control">
+                <div class="sdn-panel-grid">
+                    <!-- Left: Interactive Attack Simulator -->
+                    <div class="panel glass-card sdn-simulator-card">
+                        <div class="panel-header">
+                            <h2><i class="fa-solid fa-bolt icon-orange"></i> Live Network Attack Simulator</h2>
+                        </div>
+                        <p class="section-description">Simulate malicious network streams instantly to test the trained machine learning model and SDN defensive rule deployment in real time.</p>
+                        
+                        <div class="simulation-controls">
+                            <div class="sim-card hover-glow" data-attack="DDoS">
+                                <div class="sim-icon ddos"><i class="fa-solid fa-cloud-bolt"></i></div>
+                                <h4>DDoS Attack</h4>
+                                <p>Simulate massive multi-vector UDP/TCP floods from randomized external IP subnets.</p>
+                                <button class="btn btn-simulate">Trigger DDoS</button>
+                            </div>
+                            
+                            <div class="sim-card hover-glow" data-attack="PortScan">
+                                <div class="sim-icon portscan"><i class="fa-solid fa-radar"></i></div>
+                                <h4>Port Scanner</h4>
+                                <p>Simulate rapid host and port scanning probes targeting sensitive subnet ports.</p>
+                                <button class="btn btn-simulate">Trigger Scan</button>
+                            </div>
+                            
+                            <div class="sim-card hover-glow" data-attack="Normal">
+                                <div class="sim-icon normal"><i class="fa-solid fa-circle-check"></i></div>
+                                <h4>Normal Load</h4>
+                                <p>Simulate high-volume legitimate application web traffic and background UDP streams.</p>
+                                <button class="btn btn-simulate">Trigger Traffic</button>
+                            </div>
+                        </div>
+
+                        <div class="active-sim-badge" id="active-sim-badge">
+                            <span>Status:</span> <strong id="current-sim-text">No Simulation Active</strong>
+                            <button class="btn btn-stop-sim hide" id="btn-stop-sim">Stop Simulation</button>
+                        </div>
+                    </div>
+
+                    <!-- Right: Firewall Controls & Dynamic Sensitivity Slider -->
+                    <div class="panel glass-card sdn-firewall-card">
+                        <div class="panel-header">
+                            <h2><i class="fa-solid fa-sliders icon-purple"></i> Dynamic ML Threshold Configuration</h2>
+                        </div>
+                        
+                        <!-- Slider Area -->
+                        <div class="slider-section">
+                            <div class="slider-header">
+                                <span class="slider-label">IDS Threat Sensitivity</span>
+                                <span class="slider-value" id="threshold-val">0.50</span>
+                            </div>
+                            <input type="range" class="glass-slider" id="sensitivity-slider" min="0.05" max="0.95" step="0.05" value="0.5">
+                            <div class="slider-ticks">
+                                <span>Low (0.05)</span>
+                                <span>Balanced</span>
+                                <span>Aggressive (0.95)</span>
+                            </div>
+                            <p class="slider-tip"><i class="fa-solid fa-circle-info"></i> Aggressive mode blocks threats at lower ML class probability thresholds, while Low mode reduces potential false positives.</p>
+                        </div>
+
+                        <!-- Blocked IPs List with Unblock Action -->
+                        <div class="blocked-ips-section">
+                            <h3><i class="fa-solid fa-hand icon-red"></i> Current SDN Firewall Block List</h3>
+                            <div class="blocked-list-wrapper">
+                                <ul id="blocked-ips-list">
+                                    <li class="empty-state">No IP addresses currently blocked.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 3: AI Machine Learning Intelligence Tab -->
+            <div class="tab-pane" id="ai-analytics">
+                <div class="ai-panel-grid">
+                    <!-- Left: Model Meta Info & Hyperparameters -->
+                    <div class="panel glass-card ai-meta-card">
+                        <div class="panel-header">
+                            <h2><i class="fa-solid fa-microchip icon-green"></i> Active Classifier Performance</h2>
+                        </div>
+                        
+                        <div class="model-meta-info">
+                            <div class="meta-row">
+                                <span>Classifier Type:</span>
+                                <strong>Random Forest Ensemble</strong>
+                            </div>
+                            <div class="meta-row">
+                                <span>GridSearch Accuracy:</span>
+                                <strong class="text-green" id="model-accuracy-text">100.00%</strong>
+                            </div>
+                            <div class="meta-row">
+                                <span>Best n_estimators:</span>
+                                <strong id="best-estimators">50 trees</strong>
+                            </div>
+                            <div class="meta-row">
+                                <span>Best max_depth:</span>
+                                <strong id="best-depth">10 layers</strong>
+                            </div>
+                            <div class="meta-row">
+                                <span>Class Weights:</span>
+                                <strong id="class-weights">Balanced</strong>
+                            </div>
+                        </div>
+
+                        <!-- Class Statistics Details -->
+                        <div class="class-metrics-area">
+                            <h3>Classification Matrix Scores</h3>
+                            <div class="metrics-tables-wrapper">
+                                <table class="metrics-mini-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Class</th>
+                                            <th>Precision</th>
+                                            <th>Recall</th>
+                                            <th>F1-Score</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="metrics-classes-body">
+                                        <!-- Injected dynamically via JS -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Center: Feature Importances -->
+                    <div class="panel glass-card ai-features-card">
+                        <div class="panel-header">
+                            <h2><i class="fa-solid fa-chart-simple icon-cyan"></i> Decision Tree Feature Importances</h2>
+                        </div>
+                        <p class="section-description">Shows relative weight distributions used by the Random Forest tree splits to identify threats:</p>
+                        
+                        <div class="feature-importance-bars" id="feature-importance-container">
+                            <!-- Injected dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- Right: Confusion Matrix -->
+                    <div class="panel glass-card ai-confusion-card">
+                        <div class="panel-header">
+                            <h2><i class="fa-solid fa-table-cells icon-pink"></i> Confusion Matrix Grid</h2>
+                        </div>
+                        <p class="section-description">Normalized counts demonstrating exact predictions on test set partitions:</p>
+                        
+                        <div class="confusion-matrix-grid">
+                            <div class="matrix-axis-label vertical">True Labels</div>
+                            <div class="matrix-wrapper">
+                                <div class="matrix-header-labels">
+                                    <div>Norm</div>
+                                    <div>DDoS</div>
+                                    <div>Scan</div>
+                                </div>
+                                <div class="matrix-grid-container" id="confusion-matrix-cells">
+                                    <!-- Injected dynamically -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Script File -->
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

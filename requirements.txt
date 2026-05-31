@@ -1,0 +1,15 @@
+# Core Dashboard & Simulation Dependencies
+flask
+flask-cors
+requests
+
+# ML & Data Science Dependencies
+scikit-learn
+pandas
+numpy
+matplotlib
+seaborn
+joblib
+
+# SDN Controller Dependencies (Only required on Linux for SDN Emulation)
+# ryu
